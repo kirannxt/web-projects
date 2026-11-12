@@ -1,0 +1,15 @@
+# SQLite database files
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.db.bak
+
+# Next.js
+showcase/.next/
+showcase/node_modules/
+
+# Environment
+showcase/.env
+showcase/.env.local
+showcase/.env*.local
