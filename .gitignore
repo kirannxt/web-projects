@@ -9,7 +9,10 @@
 showcase/.next/
 showcase/node_modules/
 
-# Environment
+# Environment - never commit secrets
+.env
+.env.local
+.env*.local
 showcase/.env
 showcase/.env.local
 showcase/.env*.local
