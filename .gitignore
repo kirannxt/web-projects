@@ -1,4 +1,4 @@
-# SQLite database files (local dev only)
+# SQLite database files
 *.db
 *.db-journal
 *.db-wal
@@ -10,6 +10,9 @@ showcase/.next/
 showcase/node_modules/
 
 # Environment - never commit secrets
+.env
+.env.local
+.env*.local
 showcase/.env
 showcase/.env.local
 showcase/.env*.local
