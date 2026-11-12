@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+  // trustHost allows any host — required on Vercel where the domain can vary
   trustHost: true,
   providers: [
     Credentials({
@@ -16,25 +17,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email as string },
+          });
 
-        if (!user) return null;
+          if (!user) return null;
 
-        const passwordMatch = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
+          const passwordMatch = await bcrypt.compare(
+            credentials.password as string,
+            user.password
+          );
 
-        if (!passwordMatch) return null;
+          if (!passwordMatch) return null;
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        };
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          };
+        } catch (error) {
+          console.error("Auth error:", error);
+          return null;
+        }
       },
     }),
   ],
@@ -60,4 +66,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
   },
+  debug: process.env.NODE_ENV === "development",
 });
