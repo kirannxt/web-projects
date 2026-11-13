@@ -10,10 +10,9 @@ showcase/.next/
 showcase/node_modules/
 showcase/showcase/
 
-# Environment - never commit secrets
-.env
-.env.local
-.env*.local
+# Environment - never commit real secrets
 showcase/.env
 showcase/.env.local
 showcase/.env*.local
+# But allow the example file
+!showcase/.env.example
