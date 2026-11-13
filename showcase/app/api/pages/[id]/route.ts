@@ -39,7 +39,8 @@ export async function PUT(
       data: {
         ...(title && { title }),
         ...(cleanSlug && { slug: cleanSlug }),
-        ...(content !== undefined && { content }),
+        ...(body.content !== undefined && { content: body.content }),
+        ...(body.sections !== undefined && { sections: body.sections }),
         ...(parentMenu && { parentMenu }),
         ...(order !== undefined && { order }),
         ...(published !== undefined && { published }),

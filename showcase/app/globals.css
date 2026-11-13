@@ -1,57 +1,75 @@
 @import "tailwindcss";
 
+/* ─── Accent color palettes ─────────────────────────────────── */
 :root {
+  --accent-h: 221;
+  --accent-s: 83%;
+  --accent-l: 53%;
+  --accent:         hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+  --accent-light:   hsl(var(--accent-h) var(--accent-s) 93%);
+  --accent-dark:    hsl(var(--accent-h) var(--accent-s) 40%);
+  --accent-text:    hsl(var(--accent-h) var(--accent-s) 30%);
+  --accent-fg:      #ffffff;
+
   --background: #ffffff;
   --foreground: #171717;
+  --surface:    #f9fafb;
+  --border:     #e5e7eb;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark mode — class-based */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --surface:    #111827;
+  --border:     #374151;
+  --accent-light: hsl(var(--accent-h) var(--accent-s) 20%);
+  --accent-text:  hsl(var(--accent-h) var(--accent-s) 70%);
 }
+
+/* ─── Accent palette presets ─────────────────────────────────── */
+[data-accent="blue"]   { --accent-h: 221; --accent-s: 83%; --accent-l: 53%; }
+[data-accent="purple"] { --accent-h: 263; --accent-s: 70%; --accent-l: 50%; }
+[data-accent="green"]  { --accent-h: 142; --accent-s: 71%; --accent-l: 45%; }
+[data-accent="orange"] { --accent-h: 25;  --accent-s: 95%; --accent-l: 53%; }
+[data-accent="rose"]   { --accent-h: 347; --accent-s: 77%; --accent-l: 50%; }
+[data-accent="teal"]   { --accent-h: 172; --accent-s: 66%; --accent-l: 40%; }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* Prose styles for page content */
-.prose h1 {
-  @apply text-3xl font-bold mb-4 mt-6;
+/* ─── Accent utility classes ─────────────────────────────────── */
+.bg-accent          { background-color: var(--accent); }
+.bg-accent-light    { background-color: var(--accent-light); }
+.text-accent        { color: var(--accent); }
+.text-accent-text   { color: var(--accent-text); }
+.border-accent      { border-color: var(--accent); }
+.ring-accent        { --tw-ring-color: var(--accent); }
+.hover\:bg-accent:hover { background-color: var(--accent); }
+
+/* gradient using accent */
+.bg-accent-gradient {
+  background: linear-gradient(135deg,
+    hsl(var(--accent-h) var(--accent-s) var(--accent-l)),
+    hsl(var(--accent-h) var(--accent-s) calc(var(--accent-l) - 10%)),
+    hsl(calc(var(--accent-h) + 20) var(--accent-s) calc(var(--accent-l) - 5%))
+  );
 }
-.prose h2 {
-  @apply text-2xl font-semibold mb-3 mt-5;
-}
-.prose h3 {
-  @apply text-xl font-semibold mb-2 mt-4;
-}
-.prose p {
-  @apply mb-4 leading-relaxed;
-}
-.prose ul {
-  @apply list-disc list-inside mb-4 space-y-1;
-}
-.prose ol {
-  @apply list-decimal list-inside mb-4 space-y-1;
-}
-.prose li {
-  @apply leading-relaxed;
-}
-.prose strong {
-  @apply font-semibold;
-}
-.prose a {
-  @apply text-blue-600 hover:underline;
-}
-.prose code {
-  @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono;
-}
-.prose pre {
-  @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto mb-4;
-}
-.prose blockquote {
-  @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 dark:text-gray-400 mb-4;
-}
+
+/* ─── Prose styles ───────────────────────────────────────────── */
+.prose h1 { font-size: 1.875rem; font-weight: 700; margin-bottom: 1rem; margin-top: 1.5rem; }
+.prose h2 { font-size: 1.5rem;   font-weight: 600; margin-bottom: 0.75rem; margin-top: 1.25rem; }
+.prose h3 { font-size: 1.25rem;  font-weight: 600; margin-bottom: 0.5rem;  margin-top: 1rem; }
+.prose p  { margin-bottom: 1rem; line-height: 1.75; }
+.prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+.prose ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+.prose li { line-height: 1.75; margin-bottom: 0.25rem; }
+.prose strong { font-weight: 600; }
+.prose a  { color: var(--accent); text-decoration: underline; }
+.prose code { background: var(--surface); padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.875em; font-family: var(--font-geist-mono); }
+.prose pre  { background: var(--surface); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1rem; }
+.prose blockquote { border-left: 4px solid var(--border); padding-left: 1rem; font-style: italic; color: #6b7280; margin-bottom: 1rem; }

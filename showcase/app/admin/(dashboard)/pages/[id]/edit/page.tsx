@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import PageForm from "@/components/PageForm";
+import type { Section } from "@/types/sections";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -9,23 +10,23 @@ interface Props {
 export default async function EditPagePage({ params }: Props) {
   const { id } = await params;
   const page = await prisma.page.findUnique({ where: { id } });
-
   if (!page) notFound();
+
+  let sections: Section[] = [];
+  try { sections = JSON.parse(page.sections); } catch { sections = []; }
 
   return (
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Edit Page</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">
-          Update &ldquo;{page.title}&rdquo;
-        </p>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Update &ldquo;{page.title}&rdquo;</p>
       </div>
       <PageForm
         initialData={{
           id: page.id,
           title: page.title,
           slug: page.slug,
-          content: page.content,
+          sections,
           parentMenu: page.parentMenu,
           order: page.order,
           published: page.published,

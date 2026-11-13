@@ -24,9 +24,9 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { title, slug, content, parentMenu, order, published } = body;
 
-    if (!title || !slug || !content) {
+    if (!title || !slug) {
       return NextResponse.json(
-        { error: "Title, slug, and content are required" },
+        { error: "Title and slug are required" },
         { status: 400 }
       );
     }
@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
       data: {
         title,
         slug: cleanSlug,
-        content,
+        content: body.content || "",
+        sections: body.sections || "[]",
         parentMenu: parentMenu || "Projects",
         order: order || 0,
         published: published !== undefined ? published : true,
