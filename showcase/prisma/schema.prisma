@@ -9,37 +9,56 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  password      String
-  role          String    @default("admin")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Page {
-  id          String    @id @default(cuid())
-  title       String
-  slug        String    @unique
-  content     String
-  parentMenu  String    @default("Projects")
-  order       Int       @default(0)
-  published   Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id         String    @id @default(cuid())
+  title      String
+  slug       String    @unique
+  content    String    @default("")
+  sections   String    @default("[]") // JSON array of Section blocks
+  parentMenu String    @default("Projects")
+  order      Int       @default(0)
+  published  Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Project {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   title       String
   description String
   imageUrl    String?
   demoUrl     String?
   repoUrl     String?
-  tags        String    @default("[]")
-  featured    Boolean   @default(false)
-  order       Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  tags        String   @default("[]")
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Key-value store for all site settings
+model SiteSettings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// Uploaded media assets
+model MediaAsset {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  type      String   // "image" | "video"
+  size      Int
+  createdAt DateTime @default(now())
 }
